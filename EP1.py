@@ -21,6 +21,14 @@ def matriz_to_vetores(A):
 def vetores_to_matriz(a, b, c):
     n = len(a)
     A = np.zeros((n, n))
+    for i in range(n):
+        A[i,i] = b[i]
+        A[i,i-1] = a[i]
+        if i+1 == n:
+            A[i,0] = c[i]
+        else:
+            A[i,i+1] = c[i]
+
     return A
 
 
@@ -120,6 +128,8 @@ def main():
         a = np.array([0, 2.0, 3.0, 3.0])
         b = np.array([2.0, 2.0, 2.0, 2.0])
         c = np.array([1.0, 1.0, 1.0, 0])
+        A = vetores_to_matriz(a, b, c)
+        print("A: ", A)
         d = [1, 1, 1]
 
     elif op == 3:
@@ -142,7 +152,8 @@ def main():
     print("b: ", b)
     print("c: ", c)
     print("d: ", d)
-    decomposicao_lu(a, b, c)
+    
+    #decomposicao_lu(a, b, c)
 
 if __name__ == "__main__":
     main()
