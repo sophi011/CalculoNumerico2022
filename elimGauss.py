@@ -2,14 +2,12 @@ import numpy as np
 import sys
 import time
 
-def elim_gauss(A, b, n):
+def elim_gauss():
 
-#    a = create_matrix(n)
-#    
-#    A = np.copy(a[:,:-1])
-#    b = np.copy(a[:,n]).reshape((n))
-    
-    start_time = time.time()
+    a = np.array([[2, 1, 0, 0, 0, 1, 1], [1, 2, 1, 0, 0, 0, 1], [0, 1, 2, 1, 0, 0, 1], [0, 0, 1, 2, 1, 0, 1], [0, 0, 0, 1, 2, 1, 1], [1, 0, 0, 0, 1, 2, 1]])
+    n = len(a)
+    A = np.copy(a[:,:-1])
+    b = np.copy(a[:,n]).reshape((n))
     
     #Guardo tanto L quanto U em uma unica matriz!!!!
     LU = np.eye(n)
@@ -20,7 +18,7 @@ def elim_gauss(A, b, n):
         #Varre colunas inferiores (Lower)
         LU[(i+1):,i] = ( A[(i+1):,i]- LU[(i+1):,:i] @ LU[:i,i] ) / LU[i,i]
     
-    
+    print("LU: ", LU)
     # Substituicao
     # LUx=b
     # Ly=b
@@ -38,21 +36,14 @@ def elim_gauss(A, b, n):
         #Vetorizei aqui!
         x[i] = (y[i] - np.dot(LU[i,i+1:], x[i+1:]))/LU[i,i]
     
-    tempo = time.time() - start_time
-    
-    print("Soma da Solucao:", np.sum(x), " Tempo que levou: ", tempo)
-    
-    # Solucao
-    print('\nSolucao: ')
-    print(x[0])
-    print('\nTeste: ')
-    print(np.max(np.abs(A@x- b)))
-    
     #Testes
     U = np.triu(LU)
     L = np.tril(LU)
     np.fill_diagonal(L, 1.0)
-    print('\nTeste LU: ')
-    print(np.max(np.max(np.abs(L@U-A))))
+    print("L: ", L)
+    print("U: ", U)
 
     return x, y
+
+if __name__ == "__main__":
+    elim_gauss()
