@@ -89,9 +89,12 @@ def main():
 
     x_t = y_t - x_n*z_t
 
+    x = np.append(x_t, x_n)
+
     print("x_t: ", x_t)
     print("x_n: ", x_n)
 
+    print("x: ", x)
     #print("a_t: ", a_t)
     #print("b_t: ", b_t)
     #print("c_t: ", c_t)
