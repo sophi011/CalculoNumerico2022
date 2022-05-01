@@ -1,3 +1,9 @@
+"""
+Autoria do código
+Gabriela Yuri Ishikawa - NºUSP: 11804098
+Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
+"""
+
 import numpy as np
 
 def criar_exemplo(n):    

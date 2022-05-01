@@ -1,5 +1,8 @@
 Versão do Interpretador: Python 3.7 ou acima
 Bibliotecas utilizadas: Numpy
+Autoria do código:
+Gabriela Yuri Ishikawa - NºUSP: 11804098
+Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
 
 Para executar o código, basta rodar o arquivo EP1.py, o qual resolve sistemas lineares tridiagonais, cíclicas ou não clíclicas. 
 A implementação identifica se a matriz inserida é cíclica ou não e a resolve da melhor forma.
