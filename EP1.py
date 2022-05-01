@@ -3,6 +3,23 @@ import math
 import sys
 import time
 
+def criar_matriz(n):
+    
+    # criacao da matriz com as equacoes dadas no enunciado
+    a = np.zeros(n)
+    b = np.full((n),2)
+    d = np.zeros(n)
+
+    for i in range(n-1):
+        a[i] = (2*(i+1) - 1)/(4*(i+1))
+        d[i] = np.cos((2*np.pi*(i+1)**2)/n**2)
+
+    a[n-1] = (2*n - 1)/(2*n)
+    d[n-1] = np.cos((2*np.pi*n**2)/n**2)
+    c = 1 - a
+
+    return a, b, c, d
+
 def matriz_to_vetores(A):
     #transforma a matriz tridiagonal de entrada nos vetores a, b, c
     n = len(A)
@@ -43,79 +60,73 @@ def decomposicao_nao_ciclica(a, b, c):
         l[i] = a[i]/u[i-1]
         u[i] = b[i] - (l[i] * c[i-1])
 
-    ## criando as matrizes L e U
-    #U = np.zeros((n, n))
-    #L = np.zeros((n, n))
-    #for i in range(n-1):
-    #    U[i, i+1] = c[i]
-    #    L[i+1, i] = l[i+1]
-
-    ## diagonais de L e de U
-    #np.fill_diagonal(L, 1)
-    #for i in range(n):
-    #    U[i, i] = u[i]
-
-    ## conferindo o resultado
-    #A = np.dot(L,U)
-    #print("A: \n", A)
-
     return l, u
-    
-def decomposicao_ciclica(a, b, c):
-    #AAaaAAAAaAAaaa
-    pass
-
-def decomposicao_lu(a, b, c):
-    #decomposicao da matriz tridiagonal formada pelos vetores a, b e c
-    n = len(b)
-    
-    # se a matriz for ciclica
-    if a[0] == 0 or c[n-1] == 0:
-        #l, u = decomposicao_nao_ciclica(a, b, c)
-        print("decomposicao nao ciclica")
-    else:
-        #decomposicao_ciclica(a, b, c)
-        print("decomposicao ciclica")
 
 # RESOLUCAO DO SISTEMA LINEAR
 # A x = b
 # L y = d
 # U x = y
 
-def res_sist_linear(l, u, c, d):
+def res_sist_linear_tri(a, b, c, d):
+    # resolucao de sistema linear com matriz tridiagonal nao ciclica
 
+    l, u = decomposicao_nao_ciclica(a, b, c)
     n = len(d)
     y = np.zeros(n)
+
+    #L y = d:
     y[0] = d[0]
     for i in range(1, n):
         y[i] = d[i] - (l[i] * y[i-1])
 
-    print("y: \n", y)
-
-    #U x = y
+    #U x = y:
     x = np.zeros(n)
 
     x[n-1] = y[n-1]/u[n-1]
     for i in range(n-2, -1, -1):
         x[i] = (y[i] - c[i]*x[i+1])/u[i]
 
-    print("x:\n", x)
-    print("FIM DA NOSSA RESOLUCAO \n\n\n")
+    #print("x:\n", x)
+    return x
 
-    return x, y
+def res_sist_cic(n):
 
-#| 2 1 0 0 |
-#| 2 2 1 0 |
-#| 0 3 2 1 |
-#| 0 0 3 2 |
+    # criar a matriz a partir do n dado
+    a, b, c, d = criar_matriz(n)
 
+    #print("a: ", a)
+    #print("b: ", b)
+    #print("c: ", c)
+    #print("d: ", d)
 
-#e1 - matriz
-#e2 - vetores a, b, c, d
-#e3 - n
+    a_t = np.copy(a[:n-1])
+    a_t[0] = 0
+    b_t = np.copy(b[:n-1])
+    c_t = np.copy(c[:n-1])
+    c_t[-1] = 0
+    d_t = np.copy(d[:n-1])
+    v = np.zeros(n-1)
+    v[0] = a[0]
+    v[-1] = c[n-2]
+    w = np.zeros(n-1)
+    w[0] = c[n-1]
+    w[-1] = a[n-1]
 
-#d = np.zeros(n)
-#d = np.array([1, 1, 1, 1])
+    # para achar o y_t
+    y_t = res_sist_linear_tri(a_t, b_t, c_t, d_t)
+    print("y_t: ", y_t)
+
+    z_t = res_sist_linear_tri(a_t, b_t, c_t, v)
+    print("z_t: ", z_t)
+
+    x_n = (d[n-1] - c[n-1]*y_t[0] - a[n-1]*y_t[n-2])/(b[n-1]-c[n-1]*z_t[0]-a[n-1]*z_t[n-2])
+
+    x_t = y_t - x_n*z_t
+
+    x = np.append(x_t, x_n)
+
+    return x
+
 def main():
     op = int(input("Selecione a opcao de entrada:\n 1. Matriz Tridiagonal \n 2. Vetores da Matriz Tridiagonal \n 3. Valor de n \n"))
     if op == 1:
@@ -153,7 +164,6 @@ def main():
     print("c: ", c)
     print("d: ", d)
     
-    #decomposicao_lu(a, b, c)
 
 if __name__ == "__main__":
     main()
