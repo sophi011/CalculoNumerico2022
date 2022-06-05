@@ -78,7 +78,6 @@ def integralGauss(a, b, f, n):
 #    return res
 
 def calculaExemplo1Cubo(n):
-    f = "1"
     ax = "0"
     bx = "1"
     ay = "0"
@@ -92,9 +91,8 @@ def calculaExemplo1Cubo(n):
 
     for i in range(len(x)):
         xi = novo_x[i]
-        f_x = 1
-        novo_f = str(f_x)
-        g[i] = integralGauss(eval(ay), eval(by), novo_f, n)
+        f = "1"
+        g[i] = integralGauss(eval(ay), eval(by), f, n)
         res += novo_w[i]*g[i]
 
     return res
@@ -114,9 +112,50 @@ def calculaExemplo1Tetraedro(n):
 
     for i in range(len(x)):
         xi = novo_x[i]
-        f_x = 1 - novo_x[i]
-        novo_f = str(f_x) + " - y"
-        g[i] = integralGauss(eval(ay), eval(by), novo_f, n)
+        #f_x = 1 - novo_x[i]
+        #novo_f = str(f_x) + " - y"
+        f = str(1-novo_x[i])+ " - y"
+        g[i] = integralGauss(eval(ay), eval(by), f, n)
+        res += novo_w[i]*g[i]
+
+    return res
+
+def calculaExemplo2Primeira(n):
+    ax = "0"
+    bx = "1"
+    ay = "0"
+    by = "1 - xi**2"
+
+    x, w = no_peso(n)
+    novo_x, novo_w = mudanca_variavel(eval(ax), eval(bx), x, w)
+
+    g = np.zeros(len(x))
+    res = 0
+
+    for i in range(len(x)):
+        xi = novo_x[i]
+        f = "1"
+        g[i] = integralGauss(eval(ay), eval(by), f, n)
+        res += novo_w[i]*g[i]
+
+    return res
+
+def calculaExemplo2Segunda(n):
+    ax = "0"
+    bx = "1"
+    ay = "0"
+    by = "(1 - xi)**(1/2)"
+
+    x, w = no_peso(n)
+    novo_x, novo_w = mudanca_variavel(eval(ax), eval(bx), x, w)
+
+    g = np.zeros(len(x))
+    res = 0
+
+    for i in range(len(x)):
+        xi = novo_x[i]
+        f = "1"
+        g[i] = integralGauss(eval(ay), eval(by), f, n)
         res += novo_w[i]*g[i]
 
     return res
@@ -167,16 +206,16 @@ def main():
         print("---------- Exemplo 2 ----------")
 
         print("Para n = 6: ")
-        print("Volume do Cubo = ", calculaExemplo1Cubo(6))
-        print("Volume do Tetraedro = ", calculaExemplo1Tetraedro(6))
+        print("Pela Primeira Integral = ", calculaExemplo2Primeira(6))
+        print("Pela Segunda Integral = ", calculaExemplo2Segunda(6))
 
         print("\nPara n = 8: ")
-        print("Volume do Cubo = ", calculaExemplo1Cubo(8))
-        print("Volume do Tetraedro = ", calculaExemplo1Tetraedro(8))
+        print("Pela Primeira Integral = ", calculaExemplo2Primeira(8))
+        print("Pela Segunda Integral = ", calculaExemplo2Segunda(8))
 
         print("\nPara n = 10: ")
-        print("Volume do Cubo = ", calculaExemplo1Cubo(10))
-        print("Volume do Tetraedro = ", calculaExemplo1Tetraedro(10))
+        print("Pela Primeira Integral = ", calculaExemplo2Primeira(10))
+        print("Pela Segunda Integral = ", calculaExemplo2Segunda(10))
 
     elif exemplo == 3:
         print("---------- Exemplo 3 ----------")
