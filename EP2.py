@@ -3,7 +3,7 @@ Autoria do código
 Gabriela Yuri Ishikawa - NºUSP: 11804098
 Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
 """
-from math import *
+import math
 import numpy as np
 
 def no_peso(n):
@@ -32,12 +32,12 @@ def mudanca_variavel(a, b, x, w):
 
     return novo_x, novo_w
 
-def calcula_funcao(f, x):
-    f_x = 0
-    for i in range(len(f)):
-        f_x += f[i]*(x**i)
-
-    return f_x
+#def calcula_funcao(f, x):
+#    f_x = 0
+#    for i in range(len(f)):
+#        f_x += f[i]*(x**i)
+#
+#    return f_x
 
 #def integralGauss(a, b, f, n):
 #    x, w = no_peso(n)
@@ -160,28 +160,28 @@ def calculaExemplo2Segunda(n):
 
     return res
 
-def calcula(n):
-
-    #calcular integral normal
-    f = [1]
-    ax = [0]
-    bx = [1]
-    ay = [0]
-    by = [1, 0, -1]
-
-    x, w = no_peso(n)
-    g = np.zeros(len(x))
-    
-    for i in range(len(x)):
-        novo_x, novo_w = mudanca_variavel(calcula_funcao(ax, x[i]), calcula_funcao(bx, x[i]), x, w)
-        g[i] = integralGauss(calcula_funcao(ay, novo_x[i]), calcula_funcao(by, novo_x[i]), f, n)
-    print("g: ", g)
-
-    res = 0
-    for i in range(n + 1):
-        res += novo_w[i]*g[i]
-
-    return res
+#def calcula(n):
+#
+#    #calcular integral normal
+#    f = [1]
+#    ax = [0]
+#    bx = [1]
+#    ay = [0]
+#    by = [1, 0, -1]
+#
+#    x, w = no_peso(n)
+#    g = np.zeros(len(x))
+#    
+#    for i in range(len(x)):
+#        novo_x, novo_w = mudanca_variavel(calcula_funcao(ax, x[i]), calcula_funcao(bx, x[i]), x, w)
+#        g[i] = integralGauss(calcula_funcao(ay, novo_x[i]), calcula_funcao(by, novo_x[i]), f, n)
+#    print("g: ", g)
+#
+#    res = 0
+#    for i in range(n + 1):
+#        res += novo_w[i]*g[i]
+#
+#    return res
 
 
 def main():
