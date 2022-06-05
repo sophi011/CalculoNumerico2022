@@ -6,6 +6,7 @@ Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
 import numpy as np
 
 def no_peso(n):
+    # nos e pesos dados
     # x[j] = -x[j] <-> w[j]
     if n == 6:
         x = np.array([-0.9324695142031520278123016, -0.6612093864662645136613996, -0.2386191860831969086305017, 
@@ -38,7 +39,7 @@ def mudanca_variavel(a, b, x, w):
     return novo_x, novo_w
 
 def calculaIntegral(ax, bx, ay, by, f, n):
-    # Recebe os limites de integracao e retorna a integral calculada pela formula de integracao numerica de Gauss
+    # Recebe os limites de integracao dupla e retorna a integral calculada pela formula de integracao numerica de Gauss
     x, w = no_peso(n)
     novo_x, novo_w = mudanca_variavel(eval(ax), eval(bx), x, w)
 
@@ -117,7 +118,7 @@ def main():
 
     elif exemplo == 3:
         print("---------- Exemplo 3 ----------")
-        # Calculo da are
+        # Calculo da area
         axArea = "0.1"
         bxArea = "0.5"
         ayArea = "xi**3"
