@@ -1,0 +1,15 @@
+Versão do Interpretador: Python 3.7 ou acima
+Bibliotecas utilizadas: Numpy
+Autoria do código:
+Gabriela Yuri Ishikawa - NºUSP: 11804098
+Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
+
+Para executar o código, basta rodar o arquivo EP1.py, o qual resolve sistemas lineares tridiagonais, cíclicas ou não clíclicas. 
+A implementação identifica se a matriz inserida é cíclica ou não e a resolve da melhor forma.
+
+A sua primeira entrada corresponde ao tamanho n da matriz que deseja-se resolver. Em seguida, haverá 3 opções de entrada dessa matriz:
+    1. Inserir os valores um a um ou da matriz A e do vetor d, correspondente a A*x=d do sistema linear, ou da matriz aumentada MA.
+    2. Inserir os valores um a um dos vetores a, b, c e d da matriz tridiagonal.
+    3. Usar a matriz exemplo dada no enunciado com n igual ao valor inserido inicialmente.
+
+O código retorna um vetor x com os valores que resolvem o sistema linear dado.
