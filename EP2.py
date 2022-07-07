@@ -32,6 +32,9 @@ def mudanca_variavel(a, b, x, w):
     novo_x = np.zeros(len(x))
     novo_w = np.zeros(len(x))
 
+    if a == b:  # resolução de integral simples
+        novo_w = np.full(n, 1)
+
     for i in range(len(x)):
         novo_x[i] = (x[i] + (a + b)/(b - a)) * (b - a) / 2
         novo_w[i] = w[i] * (b - a) / 2
@@ -54,6 +57,8 @@ def calculaIntegral(ax, bx, ay, by, f, n):
         for j in range(n + 1):
             y = novo_x_y[j]
             g[i] += novo_w_y[j]*eval(f)
+        if ax == bx:  # resolução de integral simples
+            return g
 
         res += novo_w[i]*g[i]
 
