@@ -1,0 +1,11 @@
+Versão do Interpretador: Python 3.7 ou acima
+Bibliotecas utilizadas: Numpy
+Autoria do código:
+Gabriela Yuri Ishikawa - NºUSP: 11804098
+Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
+
+Para executar o código deste exercício programa, basta rodar o arquivo EP2.py, o qual resolve problemas que envolvem 
+integrais duplas a partir da fórmula de integração numérica de Gauss.
+
+O programa pergunta qual o exemplo a ser calculado, dentre os 4 exemplos propostos para o EP. Basta escolher um deles e 
+os resultados serão impressos na tela. 
