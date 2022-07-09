@@ -44,7 +44,7 @@ def calculaIntegralSimples(a, b, f, n):
     vecx, vecw = no_peso(n)
     novo_x, novo_w = mudanca_variavel(a, b, vecx, vecw)
     res = 0
-    for i in range(len(x)):
+    for i in range(len(vecx)):
         x = novo_x[i]
         res += novo_w[i]*eval(f)
 
