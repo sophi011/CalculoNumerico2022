@@ -23,7 +23,8 @@ def no_peso(n):
         0, 0.1488743389816312108848260, 0.4333953941292471907992659, 0.6794095682990244062343274, 0.8650633666889845107320967, 0.9739065285171717200779640])
         w = np.array([ 0.0666713443086881375935688, 0.1494513491505805931457763, 0.2190863625159820439955349, 0.2692667193099963550912269, 0.2955242247147528701738930, 
         0, 0.2955242247147528701738930, 0.2692667193099963550912269, 0.2190863625159820439955349, 0.1494513491505805931457763, 0.0666713443086881375935688])
-
+    else:
+        print("O cálculo só foi implementado para n sendo 6, 8 ou 10")
     return x, w
 
 def mudanca_variavel(a, b, x, w):
@@ -32,14 +33,22 @@ def mudanca_variavel(a, b, x, w):
     novo_x = np.zeros(len(x))
     novo_w = np.zeros(len(x))
 
-    if a == b:  # resolução de integral simples
-        novo_w = np.full(n, 1)
-
     for i in range(len(x)):
         novo_x[i] = (x[i] + (a + b)/(b - a)) * (b - a) / 2
         novo_w[i] = w[i] * (b - a) / 2
 
     return novo_x, novo_w
+
+def calculaIntegralSimples(a, b, f, n):
+    # recebe os limites de integracao simples e o grau de exatidao e retorna o valor da integral calculada pelo metodo de Gauss
+    vecx, vecw = no_peso(n)
+    novo_x, novo_w = mudanca_variavel(a, b, vecx, vecw)
+    res = 0
+    for i in range(len(x)):
+        x = novo_x[i]
+        res += novo_w[i]*eval(f)
+
+    return res
 
 def calculaIntegral(ax, bx, ay, by, f, n):
     # Recebe os limites de integracao dupla e retorna a integral calculada pela formula de integracao numerica de Gauss
@@ -57,8 +66,6 @@ def calculaIntegral(ax, bx, ay, by, f, n):
         for j in range(n + 1):
             y = novo_x_y[j]
             g[i] += novo_w_y[j]*eval(f)
-        if ax == bx:  # resolução de integral simples
-            return g
 
         res += novo_w[i]*g[i]
 
@@ -181,3 +188,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    #print(calculaIntegralSimples(0, 1, 'xi**2/2', 6))
