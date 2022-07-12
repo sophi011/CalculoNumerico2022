@@ -14,17 +14,16 @@ def calcula_produto_interno(f_1, f_2, a, b):
     res = EP2.calculaIntegralSimples(a, b, g, n_integral)
     return res
 
-def produtoInternoL(f_1, Derf_1, f_2, Derf_2, k, q, a, b):
+def produto_interno_L(f_1, Derf_1, f_2, Derf_2, k, q, a, b):
     # função que retorna o produto interno de duas funções de Un
     g = "(" + str(k) + "*(" + Derf_1 + ")*(" + Derf_2 + ")) + (" + str(q) + "*(" + f_1 + ")*(" + f_2 + "))"
     n_integral = 10 #precisão do cálculo da integral
 
     res = EP2.calculaIntegralSimples(a, b, g, n_integral)
-    print("prod int", res)
     
     return res
 
-def monta_splines(n, L, a=0, b=0):
+def monta_chapeu(n, L, a=0, b=0):
     h = L/(n+1) # tamanho de cada intervalo dentro de [0, L]
     vecx = np.zeros(n+2)
 
@@ -44,9 +43,6 @@ def monta_splines(n, L, a=0, b=0):
         phiEsq[i] = "(x - " + str(vecx[i-1]) + ")/" + str(h)  # vale de xi-1 até xi
         phiDir[i] = "(" + str(vecx[i+1]) + " - x)/" + str(h)  # vale de xi até xi+1
 
-    print("\n phiEsq: ", phiEsq)
-    print("\n phiDir: ", phiDir)
-
     return vecx, h, phiEsq, phiDir
 
 def monta_matriz(n, f, L, k, q, a=0, b=0):
@@ -55,15 +51,13 @@ def monta_matriz(n, f, L, k, q, a=0, b=0):
     vecb = np.zeros(n)  # diagonal principal da matriz tridiagonal do sistema linear
     vecc = np.zeros(n)  # diagonal de cima da matriz tridiagonal do sistema linear
     vecd = np.zeros(n)  # vetor do sistema linear
-    xvec, h, phiEsq, phiDir = monta_splines(n, L)
+    xvec, h, phiEsq, phiDir = monta_chapeu(n, L)
     
     for i in range(1, n+1):
         x = xvec[i]
         # calcula cada produto interno para formar a matriz tridiagonal
-        #vecb[i-1] = calcula_produto_interno(phiEsq[i], phiEsq[i], xvec[i-1], xvec[i]) + calcula_produto_interno(phiDir[i], phiDir[i], xvec[i], xvec[i+1]) 
-        vecb[i-1] = produtoInternoL(phiEsq[i], "1/"+ str(h), phiEsq[i], "1/"+str(h), k, 1, xvec[i-1], xvec[i]) + produtoInternoL(phiDir[i], "(-1)/"+ str(h), phiDir[i], "(-1)/"+str(h), k, 1, xvec[i], xvec[i+1])
-        #vecc[i-1] = calcula_produto_interno(phiEsq[i+1], phiEsq[i], xvec[i-1], xvec[i]) + calcula_produto_interno(phiDir[i+1], phiDir[i], xvec[i], xvec[i+1])
-        vecc[i-1] = produtoInternoL(phiEsq[i+1], "1/"+ str(h), phiEsq[i], "1/"+str(h), k, 1, xvec[i-1], xvec[i]) #+ produtoInternoL(phiDir[i+1], "(-1)/"+ str(h), phiDir[i], "(-1)/"+str(h), k, 1, xvec[i], xvec[i+1])
+        vecb[i-1] = produto_interno_L(phiEsq[i], "1/"+ str(h), phiEsq[i], "1/"+str(h), k, q, xvec[i-1], xvec[i]) + produto_interno_L(phiDir[i], "(-1)/"+ str(h), phiDir[i], "(-1)/"+str(h), k, q, xvec[i], xvec[i+1])
+        vecc[i-1] =  produto_interno_L(phiDir[i], "(-1)/"+ str(h), phiEsq[i+1], "1/"+str(h), k, q, xvec[i], xvec[i+1]) # o único produto nao nulo é entre a descida de phi(xi) com a subida de phi(xi+1)
         vecd[i-1] = calcula_produto_interno(f, phiEsq[i], xvec[i-1], xvec[i]) + calcula_produto_interno(f, phiDir[i], xvec[i], xvec[i+1])
 
     vecc[n-1] = 0
@@ -80,7 +74,7 @@ def monta_matriz(n, f, L, k, q, a=0, b=0):
 def validacao(f, n, L, k, q, u, a, b):
     veca, vecb, vecc, vecd = monta_matriz(n, f, L, k, q)
     alphas = EP1.resolve_vetor(veca, vecb, vecc, vecd)  # resolucao considerando condicoes iniciais nulas -- retorna o vetor de alphas
-    xvec, h, phiEsq, phiDir = monta_splines(n, L)
+    xvec, h, phiEsq, phiDir = monta_chapeu(n, L)
     u_calc = np.zeros(n)
     u_aprox = np.zeros(n)
     u_real = np.zeros(n)
@@ -89,7 +83,7 @@ def validacao(f, n, L, k, q, u, a, b):
         u_calc[i] = eval(phiEsq[i+1])*alphas[i] + eval(phiDir[i+1])*alphas[i]
         u_aprox[i] = u_calc[i] + a + (b-a)*x
         u_real[i] = eval(u)
-
+    print("alphas: ", alphas)
     return u_aprox, u_real
     
     
@@ -101,18 +95,26 @@ def calcula_erro(u, u_aprox):
 
 
 def main():
-    f = "12 * x * (1-x) - 2"
-    u = "(x**2) * (1-x)**2"
+    print()
+    #f = "12 * x * (1-x) - 2"
+    f = "np.exp(x) + 1"
+    print("f: ", f)
+    #u = "(x**2) * (1-x)**2"
+    u = "(x - 1)*(np.exp(-x) - 1)"
     L = 1
-    n = 3
-    k = 1
+    n = 7
+    k = "np.exp(x)"
+    #k = 1
+    print("k: ", k)
     q = 0
+    print("q: ", q)
     u_aprox, u_real = validacao(f, n, L, k, q, u, 0, 0)
     print("u_real: ", u_real)
     print("u_aprox: ", u_aprox)
     erro = calcula_erro(u_real, u_aprox)
 
     print("erro: ", erro)
+    print()
 
 if __name__ == "__main__":
     main()
@@ -120,4 +122,4 @@ if __name__ == "__main__":
     #print(calculaIntegralSimples(0, 1, 'xi**2/2', 6))
 
 #monta_matriz(6, "x", 1)
-#monta_splines(9, 8)
+#monta_chapeu(9, 8)
