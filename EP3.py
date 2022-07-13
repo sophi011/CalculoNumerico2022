@@ -104,8 +104,6 @@ def validacao(f, n, L, k, q, u, a, b):
     # definição dos valores de u_real e u_aprox
     for i in range (n):
         x = xvec[i+1]
-        #u_calc[i] = eval(phiEsq[i+1])*alphas[i] + eval(phiDir[i+1])*alphas[i]
-        #u_aprox[i] = u_calc[i] + a + (b-a)*x
 
         u_aprox[i] = alphas[i] + a + (b-a)*x
         u_real[i] = eval(u)
@@ -154,7 +152,6 @@ def calcula_exemplo_complementar(n):
     print("\nu_real: ", u_real)
     print("\nu_aprox: ", u_aprox)
     print("\nerro:", erro)
-    print("\n\n\n\n")
 
 def calcula_calor_gaussiana(q0pos, q0neg, L, sigma, theta, n):
     q_pos = str(q0pos) + "*np.exp(-(x-" + str(L) + "/2)**2/(" + str(sigma) + "**2))"
