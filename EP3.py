@@ -12,7 +12,7 @@ def produto_interno_d(f_1, f_2, a, b):
     # função que retorna o produto interno de f e phi
     g = "("+ f_1 + ")*("+ f_2 + ")"
 
-    n_integral = 10 #precisão do cálculo da integral
+    n_integral = 2 #precisão do cálculo da integral
 
     # resolve a integral com a função criada no EP2
     res = EP2.calculaIntegralSimples(a, b, g, n_integral)
@@ -23,7 +23,7 @@ def produto_interno_L(f_1, Derf_1, f_2, Derf_2, k, q, a, b):
     # função que retorna o produto interno de duas funções de Un
     g = "(" + str(k) + "*(" + Derf_1 + ")*(" + Derf_2 + ")) + (" + str(q) + "*(" + f_1 + ")*(" + f_2 + "))"
     
-    n_integral = 10 #precisão do cálculo da integral
+    n_integral = 2 #precisão do cálculo da integral
 
     # resolve a integral com a função criada no EP2
     res = EP2.calculaIntegralSimples(a, b, g, n_integral)
