@@ -79,12 +79,7 @@ def monta_matriz(n, f, L, k, q, a=0, b=0):
     vecc[n-1] = 0
     for i in range(n-1):    
         veca[i+1] = vecc[i]
-        
-    #print("x: ", xvec)
-    #print("\na: ", veca)
-    #print("\nb: ", vecb)
-    #print("\nc: ", vecc)
-    #print("\nd: ", vecd)
+
     return veca, vecb, vecc, vecd
     
 def validacao(f, n, L, k, q, u, a, b):
@@ -104,9 +99,6 @@ def validacao(f, n, L, k, q, u, a, b):
     # definição dos valores de u_real e u_aprox
     for i in range (n):
         x = xvec[i+1]
-        #u_calc[i] = eval(phiEsq[i+1])*alphas[i] + eval(phiDir[i+1])*alphas[i]
-        #u_aprox[i] = u_calc[i] + a + (b-a)*x
-
         u_aprox[i] = alphas[i] + a + (b-a)*x
         u_real[i] = eval(u)
 
@@ -122,6 +114,7 @@ def calcula_erro(u, u_aprox):
     return max(erro_u)
 
 def calcula_exemplo1(n):
+    # calcula a solução do problema para a f dada
     f = "12 * x * (1-x) - 2"
     u = "(x**2) * (1-x)**2"
     L = 1
@@ -129,16 +122,13 @@ def calcula_exemplo1(n):
     q = 0
     u_aprox, u_real, xvec = validacao(f, n, L, k, q, u, 0, 0)
     erro = calcula_erro(u_real, u_aprox)
-    #print("\nn: ", n)
-    #print("\nf: ", f)
-    #print("\nk: ", k)
-    #print("\nq: ", q)
-    #print("\nL: ", L)
     print("\nu_real: ", u_real)
     print("\nu_aprox: ", u_aprox)
     print("\nerro: ", erro)
+    return u_aprox, u_real, xvec
 
 def calcula_exemplo_complementar(n):
+    # calcula a solução do problema para a f dada
     f = "np.exp(x) + 1"
     u = "(x - 1)*(np.exp(-x) - 1)"
     L = 1
@@ -146,36 +136,78 @@ def calcula_exemplo_complementar(n):
     q = 0
     u_aprox, u_real, xvec = validacao(f, n, L, k, q, u, 0, 0)
     erro = calcula_erro(u_real, u_aprox)
-    #print("n: ", n)
-    #print("f: ", f)
-    #print("k: ", k)
-    #print("q: ", q)
-    #print("L: ", L)
     print("\nu_real: ", u_real)
     print("\nu_aprox: ", u_aprox)
     print("\nerro:", erro)
     print("\n\n\n\n")
+    return u_aprox, u_real, xvec
 
-def calcula_calor_gaussiana(q0pos, q0neg, L, sigma, theta, n):
+def calcula_calor_cte(n):
+    Q_pos = 750000
+    Q_neg = 0.8*Q_pos
+    Q = Q_pos - Q_neg
+    k = 3.6
+    L = 0.02
+    q = 0
+    u = "0"
+    u_aprox, u_real, xvec = validacao(str(Q), n, L, k, q, u, 0, 0)
+    comp = 1000*xvec
+    temp = 20 + u_aprox
+    for i in range(len(temp)):
+        print("em x = %.2f mm a temperatura é %d °C" %(comp[i], temp[i]))
+
+    return Q, comp, temp
+
+def calcula_calor_gaussiana(q0pos, q0neg, L, sigma, theta, n, a, b):
     q_pos = str(q0pos) + "*np.exp(-(x-" + str(L) + "/2)**2/(" + str(sigma) + "**2))"
     q_neg = str(q0neg) + "*(np.exp(-(x**2)/" + str(theta) + "**2) + np.exp(-(x-" + str(L) + ")**2/(" + str(theta) + "**2)))"
     Q = q_pos + " - " + q_neg
     k = 3.6
     q = 0
     u = "0"
-    u_aprox, u_real, xvec = validacao(Q, n, L, k, q, u, 0, 0)
-    print("u_aprox: ", u_aprox)
-    for i in range(len(u_aprox)):   
-        comp = 1000*xvec[i]
-        temp = u_aprox[i] + 273
-        x = xvec[i]
-        print("qpos = ", eval(q_pos))
-        print("em x = %.2f mm a temperatura é %d °C" %(comp, temp))
-    return u_aprox
+    u_aprox, u_real, xvec = validacao(Q, n, L, k, q, u, a, b)
+    comp = np.zeros(len(xvec))
+    temp = np.zeros(len(xvec))
+    temp[0] = a # temperatura no extremo da esquerda
+    temp[-1] = b  # temperatura no extremo da direita
+    comp = 1000*xvec
+    temp = 20 + u_aprox
+    for i in range(len(temp)):
+        print("em x = %.2f mm a temperatura é %.2f °C" %(comp[i], temp[i]))
+    return Q, comp, temp
 
-def calcula_mudanca_material(n, ks, ka):
-    # @TODO
-    pass
+def calcula_var_material(n, ks, ka, L, d, a, b):
+    # função que acha a temperatura para casos em que há mudança de material
+
+    # distribuição de calor
+    q0pos = 750000
+    q0neg = 10000
+    sigma = 10
+    theta = 1
+    q_pos = str(q0pos) + "*np.exp(-(x-" + str(L) + "/2)**2/(" + str(sigma) + "**2))"
+    q_neg = str(q0neg) + "*(np.exp(-(x**2)/" + str(theta) + "**2) + np.exp(-(x-" + str(L) + ")**2/(" + str(theta) + "**2)))"
+    Q = q_pos + " - " + q_neg    
+
+    # aluminio
+    u_aprox1, u_real, xvec1 = validacao(Q, n, L, ka, 0, "0", 0, 0)
+    temp = np.zeros(len(xvec1))
+    for i in range(1, len(u_aprox1)):
+        if xvec1[i] <= L/2 - d or xvec1[i] >= L/2 + d:
+            temp[i] = u_aprox1[i]
+
+    # silício no centro
+    u_aprox2, u_real, xvec2 = validacao(Q, n, L, ks, 0, "0", 0, 0)
+    for i in range(len(u_aprox2-1)):
+        if xvec1[i] > L/2 - d and xvec1[i] <= L/2 + d:
+            temp[i] = u_aprox2[i]
+    comp = np.zeros(len(xvec1))
+    temp[0] = a # temperatura no extremo da esquerda
+    temp[-1] = b  # temperatura no extremo da direita
+    comp = 1000*xvec1
+    temp = 20 + temp
+    for i in range(len(temp)):
+        print("em x = %.2f mm a temperatura é %.2f °C" %(comp[i], temp[i]))
+    return Q, comp, temp
 
 def main():
     print("\n\n\n------ VALIDAÇÃO ------")
@@ -210,9 +242,10 @@ def main():
     print("\n\nPara n = 63")
     calcula_exemplo_complementar(63)
     #calcula_exemplo_complementar(31)
-    #print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
-    #calcula_calor_gaussiana(750000, 10000, 0.02, 1, 1, 7)
+    print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
+    calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 31, 0, 0)
 
 
 if __name__ == "__main__":
     main()
+    calcula_calor_cte(31)
