@@ -79,7 +79,7 @@ def monta_matriz(n, f, L, k, q, a=0, b=0):
     vecc[n-1] = 0
     for i in range(n-1):    
         veca[i+1] = vecc[i]
-
+    
     return veca, vecb, vecc, vecd
     
 def validacao(f, n, L, k, q, u, a, b):
@@ -121,11 +121,14 @@ def calcula_exemplo1(n):
     L = 1
     k = 1
     q = 0
+
     u_aprox, u_real, xvec = validacao(f, n, L, k, q, u, 0, 0)
     erro = calcula_erro(u_real, u_aprox)
+
     print("\nu_real: ", u_real)
     print("\nu_aprox: ", u_aprox)
     print("\nerro: ", erro)
+
     return u_aprox, u_real, xvec
 
 def calcula_exemplo_complementar(n):
@@ -135,12 +138,14 @@ def calcula_exemplo_complementar(n):
     L = 1
     k = "np.exp(x)"
     q = 0
+
     u_aprox, u_real, xvec = validacao(f, n, L, k, q, u, 0, 0)
     erro = calcula_erro(u_real, u_aprox)
+    
     print("\nu_real: ", u_real)
     print("\nu_aprox: ", u_aprox)
     print("\nerro:", erro)
-    print("\n\n\n\n")
+
     return u_aprox, u_real, xvec
 
 def calcula_calor_cte(n):
@@ -211,42 +216,86 @@ def calcula_var_material(n, ks, ka, L, d, a, b):
     return Q, comp, temp
 
 def main():
-    print("\n\n\n------ VALIDAÇÃO ------")
-    print("\n\nPara n = 7")
-    calcula_exemplo1(7)
 
-    print("\n\n\n------ VALIDAÇÃO ------")
-    print("\n\nPara n = 15")
-    calcula_exemplo1(15)
+    prob = int(input("Qual problema você deseja resolver?\n1. Validação\n2. Exemplo Complementar\n3. Modelagem de Transferência de Calor\n"))
 
-    print("\n\n\n------ VALIDAÇÃO ------")
-    print("\n\nPara n = 31")
-    calcula_exemplo1(31)
+    if prob == 1:
+        n = int(input("Qual o valor de n?\n"))
+        if n == 7:        
+            print("\n\n\n------ VALIDAÇÃO ------")
+            print("\n\nPara n = 7")
+            calcula_exemplo1(7)
 
-    print("\n\n\n------ VALIDAÇÃO ------")
-    print("\n\nPara n = 63")
-    calcula_exemplo1(63)
+        elif n == 15:
+            print("\n\n\n------ VALIDAÇÃO ------")
+            print("\n\nPara n = 15")
+            calcula_exemplo1(15)
 
-    print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
-    print("\n\nPara n = 7")
-    calcula_exemplo_complementar(7)
+        elif n == 31:
+            print("\n\n\n------ VALIDAÇÃO ------")
+            print("\n\nPara n = 31")
+            calcula_exemplo1(31)
 
-    print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
-    print("\n\nPara n = 15")
-    calcula_exemplo_complementar(15)
+        elif n == 63:
+            print("\n\n\n------ VALIDAÇÃO ------")
+            print("\n\nPara n = 63")
+            calcula_exemplo1(63)
 
-    print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
-    print("\n\nPara n = 31")
-    calcula_exemplo_complementar(31)
+        else:
+            print("Não há essa opção!")
 
-    print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
-    print("\n\nPara n = 63")
-    calcula_exemplo_complementar(63)
-    #calcula_exemplo_complementar(31)
-    print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
-    calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 31, 0, 0)
+    elif prob == 2:
+        n = int(input("Qual o valor de n?\n"))
+        if n == 7:             
+            print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
+            print("\n\nPara n = 7")
+            calcula_exemplo_complementar(7)
+
+        elif n == 15:
+            print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
+            print("\n\nPara n = 15")
+            calcula_exemplo_complementar(15)
+
+        elif n == 31:
+            print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
+            print("\n\nPara n = 31")
+            calcula_exemplo_complementar(31)
+
+        elif n ==63:
+            print("\n\n\n------ EXEMPLO COMPLEMENTAR ------")
+            print("\n\nPara n = 63")
+            calcula_exemplo_complementar(63)
+
+        else:
+            print("Não há essa opção!")
+        
+    elif prob == 3:
+        n = int(input("Qual o valor de n?\n"))
+        if n == 7:             
+            print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
+            print("\n\nPara n = 7")
+            calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 7, 0, 0)
+
+        elif n == 15:
+            print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
+            print("\n\nPara n = 15")
+            calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 15, 0, 0)
+
+        elif n == 31:
+            print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
+            print("\n\nPara n = 31")
+            calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 31, 0, 0)
+
+        elif n ==63:
+            print("------ EXEMPLO CALOR GERADO COM FUNÇÃO GAUSSIANA ------")
+            print("\n\nPara n = 63")
+            calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 63, 0, 0)
+
+        else:
+            print("Não há essa opção!")
+        
 
 
 if __name__ == "__main__":
     main()
-    calcula_calor_cte(31)
+    #calcula_calor_cte(31)
