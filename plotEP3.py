@@ -24,9 +24,9 @@ def plot_calor_cte():
     plt.show()
 
 def plot_gaussianas():
-    a = 20
-    b = 20
-    Q, comp, temp = EP3.calcula_calor_gaussiana(750000, 10000, 0.02, 0.01, 1, 31, a, b)
+    a = 50
+    b = 10
+    Q, comp, temp = EP3.calcula_calor_gaussiana(750000, 10000, 0.02, 10, 1, 100, a, b)
     temp2 = np.zeros(len(comp))
     Qvec = np.zeros(len(comp))
     temp2[1:-1] = temp
@@ -74,7 +74,7 @@ def plot_var_material():
     plt.show()
 
 if __name__ == "__main__":
-    #plot_calor_cte()
-    #plot_gaussianas()
+    plot_calor_cte()
+    plot_gaussianas()
     plot_var_material()
 

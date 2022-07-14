@@ -217,7 +217,7 @@ def calcula_var_material(n, ks, ka, L, d, a, b):
 
 def main():
 
-    prob = int(input("Qual problema você deseja resolver?\n1. Validação\n2. Exemplo Complementar\n3. Modelagem de Transferência de Calor\n"))
+    prob = int(input("Qual problema você deseja resolver?\n1. Validação\n2. Exemplo Complementar\n3. Modelagem de Transferência de Calor\n4. Modelagem com mudança de material\n"))
 
     if prob == 1:
         n = int(input("Qual o valor de n?\n"))
@@ -292,10 +292,14 @@ def main():
             calcula_calor_gaussiana(750000, 10000, 0.02, 1000, 1, 63, 0, 0)
 
         else:
-            print("Não há essa opção!")
+                    print("Não há essa opção!")
+                
+    elif prob == 4:
+        n = int(input("Qual o valor de n?\n"))
+        print("------ EXEMPLO COM MUDANÇA DE MATERIAL ------")
+        print("\n\nPara n = %d" %n)
+        calcula_var_material(n, 3.6, 60, 0.02, 0.005, 0, 0)
         
-
-
+    
 if __name__ == "__main__":
     main()
-    #calcula_calor_cte(31)
