@@ -1,0 +1,12 @@
+Versão do Interpretador: Python 3.7 ou acima
+Bibliotecas utilizadas: Numpy
+Dependências: EP1.py e EP2.py
+Autoria do código:
+Gabriela Yuri Ishikawa - NºUSP: 11804098
+Sophia Celine Rafael Alves Pereira - NºUSP: 11803994
+
+Para executar o código deste exercício programa, basta rodar o arquivo EP3.py, o qual possui a aplicação do método
+dos elementos finitos e resolve o problema de modelagem de transferência de calor. Lembrando que esse código apresenta
+dependência e estas devem estar no mesmo diretório do arquivo EP3.py quando rodá-lo
+
+[instruções]

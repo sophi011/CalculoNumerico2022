@@ -99,6 +99,7 @@ def validacao(f, n, L, k, q, u, a, b):
     # definição dos valores de u_real e u_aprox
     for i in range (n):
         x = xvec[i+1]
+
         u_aprox[i] = alphas[i] + a + (b-a)*x
         u_real[i] = eval(u)
 
